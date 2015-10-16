@@ -383,19 +383,19 @@ void AudioProcessor::copyXmlToBinary (const XmlElement& xml, juce::MemoryBlock& 
 
     // go back and write the string length..
     static_cast<uint32*> (destData.getData())[1]
-        = ByteOrder::swapIfBigEndian ((uint32) destData.getSize() - 9);
+        = ByteOrder::swapIfBigEndian ((uint32) destData.getSize() - 9); // What does 9 mean?
 }
 
 XmlElement* AudioProcessor::getXmlFromBinary (const void* data, const int sizeInBytes)
 {
-    if (sizeInBytes > 8
+    if (sizeInBytes > 8 // What does 8 mean?
          && ByteOrder::littleEndianInt (data) == magicXmlNumber)
     {
-        const int stringLength = (int) ByteOrder::littleEndianInt (addBytesToPointer (data, 4));
+        const int stringLength = (int) ByteOrder::littleEndianInt (addBytesToPointer (data, 4)); // What does 4 mean? What if sizeof(int) != 4?
 
         if (stringLength > 0)
-            return XmlDocument::parse (String::fromUTF8 (static_cast<const char*> (data) + 8,
-                                                         jmin ((sizeInBytes - 8), stringLength)));
+            return XmlDocument::parse (String::fromUTF8 (static_cast<const char*> (data) + 8, // What does 8 mean?
+                                                         jmin ((sizeInBytes - 8), stringLength))); // same here
     }
 
     return nullptr;
